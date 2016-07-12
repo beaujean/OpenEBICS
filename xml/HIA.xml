@@ -1,0 +1,21 @@
+<ebicsUnsecuredRequest xmlns="http://www.ebics.org/H003" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Revision="1" Version="H003" xsi:schemaLocation="http://www.ebics.org/H003 http://www.ebics.org/H003/ebics_keymgmt_request.xsd">
+    <header authenticate="true">
+        <static>
+			<HostID>{{ HostID }}</HostID>
+			<PartnerID>{{ PartnerID }}</PartnerID>
+			<UserID>{{ UserID }}</UserID>
+            <OrderDetails>
+                <OrderType>HIA</OrderType>
+				<OrderID>{{ OrderID }}</OrderID>
+                <OrderAttribute>DZNNN</OrderAttribute>
+            </OrderDetails>
+            <SecurityMedium>0000</SecurityMedium>
+        </static>
+        <mutable/>
+    </header>
+    <body>
+        <DataTransfer>
+			<OrderData>{{ OrderData }}</OrderData>
+        </DataTransfer>
+    </body>
+</ebicsUnsecuredRequest>

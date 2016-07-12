@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ebicsUnsecuredRequest xmlns="http://www.ebics.org/H003" Revision="1" Version="H003">
+  <header authenticate="true">
+    <static>
+      <HostID>{{ HostID }}</HostID>
+	  <PartnerID>{{ PartnerID }}</PartnerID>
+	  <UserID>{{ UserID }}</UserID>
+      <OrderDetails>
+        <OrderType>INI</OrderType>
+		<OrderID>{{ OrderID }}</OrderID>
+        <OrderAttribute>DZNNN</OrderAttribute>
+      </OrderDetails>
+      <SecurityMedium>0000</SecurityMedium>
+    </static>
+    <mutable/>
+  </header>
+  <body>
+    <DataTransfer>
+      <OrderData>{{ OrderData }}</OrderData>
+    </DataTransfer>
+  </body>
+</ebicsUnsecuredRequest>

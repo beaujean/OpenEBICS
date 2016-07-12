@@ -1,0 +1,36 @@
+<HIARequestOrderData xmlns="http://www.ebics.org/H003" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ebics.org/H003 http://www.ebics.org/H003/ebics_orders.xsd">
+  <AuthenticationPubKeyInfo>
+    <ds:X509Data>
+      <ds:X509IssuerSerial>
+		<ds:X509IssuerName>{{ AuthIssuerName }}</ds:X509IssuerName>
+		<ds:X509SerialNumber>{{ AuthSerialNumber }}</ds:X509SerialNumber>
+      </ds:X509IssuerSerial>
+	  <ds:X509Certificate>{{ AuthCertificate }}</ds:X509Certificate>
+    </ds:X509Data>
+    <PubKeyValue>
+      <ds:RSAKeyValue>
+		<ds:Modulus>{{ AuthModulus }}</ds:Modulus>
+		<ds:Exponent>{{ AuthExponent }}</ds:Exponent>
+      </ds:RSAKeyValue>
+    </PubKeyValue>
+    <AuthenticationVersion>X002</AuthenticationVersion>
+  </AuthenticationPubKeyInfo>
+  <EncryptionPubKeyInfo>
+    <ds:X509Data>
+      <ds:X509IssuerSerial>
+	    <ds:X509IssuerName>{{ EncrIssuerName }}</ds:X509IssuerName>
+	    <ds:X509SerialNumber>{{ EncrSerialNumber }}</ds:X509SerialNumber>
+      </ds:X509IssuerSerial>
+	  <ds:X509Certificate>{{ EncrCertificate }}</ds:X509Certificate>
+    </ds:X509Data>
+    <PubKeyValue>
+      <ds:RSAKeyValue>
+	    <ds:Modulus>{{ EncrModulus }}</ds:Modulus>
+	    <ds:Exponent>{{ EncrExponent }}</ds:Exponent>
+      </ds:RSAKeyValue>
+    </PubKeyValue>
+    <EncryptionVersion>E002</EncryptionVersion>
+  </EncryptionPubKeyInfo>
+  <PartnerID>{{ PartnerID }}</PartnerID>
+  <UserID>{{ UserID }}</UserID>
+</HIARequestOrderData>
