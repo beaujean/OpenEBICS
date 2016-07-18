@@ -1,0 +1,12 @@
+Server:
+    URL: https://ebics.labank.eu/post
+	Cert: certs/ebics.cer
+    HostID: LBNKFRPPXXX
+    PartnerID: PP000001
+Users:
+    userone:
+        UserID: UU000000ABCDEFGH
+        transport: yes
+    usertwo:
+        UserID: UU000000ABCDEFGH
+        signature: yes
