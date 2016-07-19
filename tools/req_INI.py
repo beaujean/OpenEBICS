@@ -1,6 +1,6 @@
 import sys
 import yaml
-import gzip
+import zlib
 import pytz
 import base64
 import dumper
@@ -57,6 +57,9 @@ pub_der.decode(pub_asn1)
 Modulus = pub_der[1]
 Exponent = pub_der[2]
 
+Modulus = 't/ukB4IaOuQfPBEFW+HGoHOmsiSFbH1jVx7kVF6e+iU2w9LLktQqZPvHZV4eA71mdJmsrvmXe78sg8Bx1kUuI0MduWTHsS9AedZUel1AHMZ14+KPUyGMQZBjNVM+Pbj279mykyCJzJz7MOfn9+ppU8Lj6Xrd6E0YTIxGusx0YUF33vDm0t0rM2e9Mfj+2KRkdeu86CCBTUsC6x9+79h9glo7zrm1IE53vqcKfVCAwexjYtha7NgNnpY+QZjvfAYhDuqN3hDtXN6igus2TVHvEwWd7P8NYVQrRfDIugFkHJ/S7bCiFVeSbjbaDELGf7KlALW8YpIh91MBBWyehqRUzw=='
+Exponent = 'AQAB'
+
 # 2016-07-07T13:26:01.592+01:00
 TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
 
@@ -68,25 +71,26 @@ xml_A005 = Tpl_A005.render(HostID = cfg['Server']['HostID'],
                         SerialNumber = SerialNumber,
                         Certificate = st_cert,
                         TimeStamp = TimeStamp,
-                        Modulus = base64.b64encode(str(Modulus).encode()).decode(),
-                        Exponent = base64.b64encode(str(Exponent).encode()).decode())
-                        #Exponent = str(Exponent))
+                        Modulus = Modulus,
+                        Exponent = Exponent)
+print (xml_A005)
 
-zip_A005 = gzip.compress(xml_A005.encode())
+# Gzip and base64 A005 auth cert
+zip_A005 = zlib.compress(xml_A005.encode())
 b64_A005 = base64.b64encode(zip_A005)
 
 # Parsing INI templates
 xml_INI = Tpl_INI.render(HostID = cfg['Server']['HostID'],
                         PartnerID = cfg['Server']['PartnerID'],
                         UserID = UserID,
-                        OrderID = 'B010',
+                        OrderID = 'A001',
                         OrderData = b64_A005.decode())
 print (xml_INI)
 
 if 'Cert' in cfg['Server']:
-    response = requests.post(cfg['Server']['URL'], cert=cfg['Server']['Cert'], data=xml)
+    response = requests.post(cfg['Server']['URL'], cert=cfg['Server']['Cert'], data=xml_INI.encode())
 else:
-    response = requests.post(cfg['Server']['URL'], xml_INI)
+    response = requests.post(cfg['Server']['URL'], xml_INI.encode())
 
 print (response.text)
 
