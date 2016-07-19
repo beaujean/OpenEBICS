@@ -6,7 +6,7 @@
 		<ds:X509IssuerName>{{ IssuerName }}</ds:X509IssuerName>
 		<ds:X509SerialNumber>{{ SerialNumber }}</ds:X509SerialNumber>
       </ds:X509IssuerSerial>
-	  <ds:X509Certificate>{{ Certificate  }}</ds:X509Certificate>
+      <ds:X509Certificate>{{ Certificate }}</ds:X509Certificate>
     </ds:X509Data>
     <PubKeyValue>
       <ds:RSAKeyValue>
