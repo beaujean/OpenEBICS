@@ -38,9 +38,6 @@ for user in cfg['Users']:
 # Getting useful certificate informations
 auth_cert = OEcert.get_cert_info('certs/'+User+'/auth.crt')
 
-#Modulus = 't/ukB4IaOuQfPBEFW+HGoHOmsiSFbH1jVx7kVF6e+iU2w9LLktQqZPvHZV4eA71mdJmsrvmXe78sg8Bx1kUuI0MduWTHsS9AedZUel1AHMZ14+KPUyGMQZBjNVM+Pbj279mykyCJzJz7MOfn9+ppU8Lj6Xrd6E0YTIxGusx0YUF33vDm0t0rM2e9Mfj+2KRkdeu86CCBTUsC6x9+79h9glo7zrm1IE53vqcKfVCAwexjYtha7NgNnpY+QZjvfAYhDuqN3hDtXN6igus2TVHvEwWd7P8NYVQrRfDIugFkHJ/S7bCiFVeSbjbaDELGf7KlALW8YpIh91MBBWyehqRUzw=='
-#Exponent = 'AQAB'
-
 # 2016-07-07T13:26:01.592+01:00
 TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
 
