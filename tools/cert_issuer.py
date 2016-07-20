@@ -1,14 +1,32 @@
+import sys
 import OpenSSL.crypto
 from Crypto.Util import asn1
 import dumper
 import pprint
+import yaml
+
+if sys.argv and sys.argv[1:]:
+    cfgfile = sys.argv[1]
+else:
+    cfgfile = 'ebics.yml'
+
+# Loading the EBICS config file
+with open(cfgfile, 'r') as ymlfile:
+    cfg = yaml.load(ymlfile)
+
+# Parsing users args
+for user in cfg['Users']:
+    if 'transport' in cfg['Users'][user]:
+        print ('Transporter:',user,'->',cfg['Users'][user]['UserID'])
+        User = user
+        UserID = cfg['Users'][user]['UserID']
 
 c=OpenSSL.crypto
 
-st_cert=open('certs/abeaujean/auth.crt', 'rt').read()
+st_cert=open('certs/'+User+'/auth.crt', 'rt').read()
 cert=c.load_certificate(c.FILETYPE_PEM, st_cert)
 
-st_key=open('certs/abeaujean/auth.key', 'rt').read()
+st_key=open('certs/'+User+'/auth.key', 'rt').read()
 key=c.load_privatekey(c.FILETYPE_PEM, st_key)
 
 iss = cert.get_issuer()
@@ -37,3 +55,4 @@ pub_modulus=pub_der[1]
 pub_exponent=pub_der[2]
 print (pub_modulus)
 print (pub_exponent)
+
