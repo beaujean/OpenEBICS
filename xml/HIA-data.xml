@@ -2,15 +2,15 @@
   <AuthenticationPubKeyInfo>
     <ds:X509Data>
       <ds:X509IssuerSerial>
-		<ds:X509IssuerName>{{ AuthIssuerName }}</ds:X509IssuerName>
-		<ds:X509SerialNumber>{{ AuthSerialNumber }}</ds:X509SerialNumber>
+        <ds:X509IssuerName>{{ AuthIssuerName }}</ds:X509IssuerName>
+        <ds:X509SerialNumber>{{ AuthSerialNumber }}</ds:X509SerialNumber>
       </ds:X509IssuerSerial>
-	  <ds:X509Certificate>{{ AuthCertificate }}</ds:X509Certificate>
+      <ds:X509Certificate>{{ AuthCertificate }}</ds:X509Certificate>
     </ds:X509Data>
     <PubKeyValue>
       <ds:RSAKeyValue>
-		<ds:Modulus>{{ AuthModulus }}</ds:Modulus>
-		<ds:Exponent>{{ AuthExponent }}</ds:Exponent>
+        <ds:Modulus>{{ AuthModulus }}</ds:Modulus>
+        <ds:Exponent>{{ AuthExponent }}</ds:Exponent>
       </ds:RSAKeyValue>
     </PubKeyValue>
     <AuthenticationVersion>X002</AuthenticationVersion>
@@ -18,15 +18,15 @@
   <EncryptionPubKeyInfo>
     <ds:X509Data>
       <ds:X509IssuerSerial>
-	    <ds:X509IssuerName>{{ EncrIssuerName }}</ds:X509IssuerName>
-	    <ds:X509SerialNumber>{{ EncrSerialNumber }}</ds:X509SerialNumber>
+        <ds:X509IssuerName>{{ EncrIssuerName }}</ds:X509IssuerName>
+        <ds:X509SerialNumber>{{ EncrSerialNumber }}</ds:X509SerialNumber>
       </ds:X509IssuerSerial>
-	  <ds:X509Certificate>{{ EncrCertificate }}</ds:X509Certificate>
+      <ds:X509Certificate>{{ EncrCertificate }}</ds:X509Certificate>
     </ds:X509Data>
     <PubKeyValue>
       <ds:RSAKeyValue>
-	    <ds:Modulus>{{ EncrModulus }}</ds:Modulus>
-	    <ds:Exponent>{{ EncrExponent }}</ds:Exponent>
+        <ds:Modulus>{{ EncrModulus }}</ds:Modulus>
+        <ds:Exponent>{{ EncrExponent }}</ds:Exponent>
       </ds:RSAKeyValue>
     </PubKeyValue>
     <EncryptionVersion>E002</EncryptionVersion>
