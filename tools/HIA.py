@@ -3,7 +3,6 @@ import yaml
 import zlib
 import pytz
 import base64
-import pprint
 import datetime
 from datetime import time, tzinfo
 import requests
