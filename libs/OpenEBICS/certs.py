@@ -22,6 +22,10 @@ def get_cert_info(cert_file):
     cert['SerialNumber'] = cert_data.get_serial_number()
     Pubkey = cert_data.get_pubkey()
 
+    # Only works for RSA (I think...)
+    if Pubkey.type()!=c.TYPE_RSA:
+        raise Exception('Sorry, EBICS can only handle RSA keys.')
+
     # Get Modulus and Exponent from X509 object
     pub_asn1 = c.dump_privatekey(c.FILETYPE_ASN1, Pubkey)
     # Decode DER
