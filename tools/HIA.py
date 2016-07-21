@@ -1,5 +1,4 @@
 import sys
-import yaml
 import zlib
 import pytz
 import base64
@@ -9,16 +8,10 @@ import requests
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, FileSystemLoader
 sys.path.append('./libs/')
+import OpenEBICS
 import OpenEBICS.certs as OEcert
 
-if sys.argv and sys.argv[1:]:
-    cfgfile = sys.argv[1]
-else:
-    cfgfile = 'ebics.yml'
-
-# Loading the EBICS config file
-with open(cfgfile, 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)
+cfg = OpenEBICS.config()
 
 # Parsing users args
 for user in cfg['Users']:

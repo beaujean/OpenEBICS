@@ -1,18 +1,12 @@
 import sys
 import dumper
-import yaml
 import requests
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, FileSystemLoader
+sys.path.append('./libs/')
+import OpenEBICS
 
-if sys.argv and sys.argv[1:]:
-    cfgfile = sys.argv[1]
-else:
-    cfgfile = 'ebics.yml'
-
-# Load the EBICS config file
-with open(cfgfile, 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)
+cfg = OpenEBICS.config()
 
 # Parse Template
 TplEnv = Environment(loader=FileSystemLoader('xml/'))
