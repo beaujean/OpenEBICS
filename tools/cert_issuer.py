@@ -28,7 +28,7 @@ iss = cert.get_issuer()
 print (iss.CN)
 print (iss.O)
 
-print (key.type())
+#print (key.type())
 print (key.bits())
 
 print (cert.get_serial_number())
@@ -36,8 +36,8 @@ print (cert.get_serial_number())
 pub = cert.get_pubkey()
 
 # Only works for RSA (I think)
-if pub.type()!=c.TYPE_RSA:
-    raise Exception('Can only handle RSA keys')
+#if pub.type()!=c.TYPE_RSA:
+#    raise Exception('Can only handle RSA keys')
 
 # This seems to work with public as well
 pub_asn1=c.dump_privatekey(c.FILETYPE_ASN1, pub)

@@ -1,6 +1,5 @@
 import os
 import sys
-import pprint
 import subprocess
 sys.path.append('./libs/')
 import OpenEBICS
