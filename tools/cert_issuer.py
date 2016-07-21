@@ -3,16 +3,10 @@ import OpenSSL.crypto
 from Crypto.Util import asn1
 import dumper
 import pprint
-import yaml
+sys.path.append('./libs/')
+import OpenEBICS
 
-if sys.argv and sys.argv[1:]:
-    cfgfile = sys.argv[1]
-else:
-    cfgfile = 'ebics.yml'
-
-# Loading the EBICS config file
-with open(cfgfile, 'r') as ymlfile:
-    cfg = yaml.load(ymlfile)
+cfg = OpenEBICS.config()
 
 # Parsing users args
 for user in cfg['Users']:
