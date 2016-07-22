@@ -15,7 +15,7 @@ Tpl_letter = TplEnv.get_template('letter.txt')
 
 # Creating keys for each users defined in the config file
 for user in sorted(cfg['Users']):
-    print ('Creating letter for user '+user+' ('+cfg['Users'][user]['UserID']+')')
+    print ('Creating letters for user '+user+' ('+cfg['Users'][user]['UserID']+')')
     userdir = 'certs/'+user
     # creating directories
     if not os.path.exists(userdir):
@@ -24,10 +24,10 @@ for user in sorted(cfg['Users']):
     # creating letter for each key...
     for key in ['auth', 'crypt', 'sign']:
         crtfile = userdir+'/'+key+'.crt'
-        letterfile = userdir+'/'+key+'.txt'
+        letterfile = userdir+'/'+key+'_letter.txt'
         # keys already exists ?
         if os.path.exists(letterfile):
-            print ('letter file',letterfile,'already exists')
+            print ('\tletter file',letterfile,'already exists')
             next
         else:
             # Getting useful certificate informations
@@ -45,5 +45,8 @@ for user in sorted(cfg['Users']):
                 Date = Date,
                 Digest1 = cert['Digest'][:47].replace(':', ' '),
                 Digest2 = cert['Digest'][48:].replace(':', ' '))
-            print (txt_letter)
+            #print (txt_letter)
+            with open(letterfile, 'w') as fh:
+                fh.write(txt_letter)
+            print ('\t'+key,'letter created in',letterfile)
 
