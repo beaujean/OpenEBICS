@@ -20,7 +20,7 @@ for user in sorted(cfg['Users']):
         keyfile = userdir+'/'+key+'.key'
         # keys already exists ?
         if os.path.exists(crtfile) or os.path.exists(keyfile):
-            print ('crt file',crtfile,'or key file',keyfile,'already exists')
+            print ('\tcrt file',crtfile,'or key file',keyfile,'already exists')
             next
         else:
             command = 'openssl req -x509 -nodes -days 730 -newkey rsa:2048 -out '+userdir+'/'+key+'.crt -keyout '+userdir+'/'+key+'.key -subj "/C=FR/ST=France/L=Paris/O='+cfg['Company']+'/OU='+cfg['Company']+'/CN='+user+'"'
