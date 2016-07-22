@@ -3,6 +3,7 @@ Server:
     Cert: certs/ebics.cer
     HostID: LBNKFRPPXXX
     PartnerID: PP000001
+	Name: La Bank EU
 Users:
     userone:
         UserID: UU000000ABCDEFGH
