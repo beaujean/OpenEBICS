@@ -50,3 +50,8 @@ pub_exponent=pub_der[2]
 print (pub_modulus)
 print (pub_exponent)
 
+digest = cert.digest('SHA256').decode()
+#print (digest)
+print (digest[:47].replace(':', ' '))
+print (digest[48:].replace(':', ' '))
+
