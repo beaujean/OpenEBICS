@@ -1,15 +1,15 @@
-Lettre d'initialisation du certificat d'authentification
+Lettre d'initialisation du certificat {{ VersionName }}
 
 
 Date:                   {{ Date }}
 Banque:                 {{ BankName }}
-ID Hôte:                {{ HostID }}
+ID Hote:                {{ HostID }}
 ID Partenaire:          {{ PartnerID }}
 ID Utilisateur:         {{ UserID }}
 Nom Utilisateur:        {{ User }}
 Version:                {{ VersionName }} {{ Version }}
 
-Certificat d'authentification électronique:
+Certificat d'authentification electronique:
 
 {{ Certificate }}
 
