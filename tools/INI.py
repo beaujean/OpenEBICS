@@ -10,7 +10,6 @@ from jinja2 import Environment, FileSystemLoader
 sys.path.append('./libs/')
 import OpenEBICS
 import OpenEBICS.certs as OEcert
-import pprint
 
 cfg = OpenEBICS.config()
 
