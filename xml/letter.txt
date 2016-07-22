@@ -1,0 +1,22 @@
+Lettre d'initialisation du certificat d'authentification
+
+
+Date:                   {{ Date }}
+Banque:                 {{ BankName }}
+ID Hôte:                {{ HostID }}
+ID Partenaire:          {{ PartnerID }}
+ID Utilisateur:         {{ UserID }}
+Nom Utilisateur:        {{ User }}
+Version:                {{ VersionName }} {{ Version }}
+
+Certificat d'authentification électronique:
+
+{{ Certificate }}
+
+Hash du certificat d'authentification (SHA-256):
+
+{{ Digest1 }}
+{{ Digest2 }}
+
+
+Date:                   Signature:
