@@ -23,7 +23,7 @@ for user in sorted(cfg['Users']):
             print ('\tcrt file',crtfile,'or key file',keyfile,'already exists')
             next
         else:
-            command = 'openssl req -x509 -nodes -days 730 -newkey rsa:2048 -out '+userdir+'/'+key+'.crt -keyout '+userdir+'/'+key+'.key -subj "/C=FR/ST=France/L=Paris/O='+cfg['Company']+'/OU='+cfg['Company']+'/CN='+user+'"'
+            command = 'openssl req -x509 -nodes -days 730 -newkey rsa:2048 -sha256 -out '+userdir+'/'+key+'.crt -keyout '+userdir+'/'+key+'.key -subj "/C=FR/ST=France/L=Paris/O='+cfg['Company']+'/OU='+cfg['Company']+'/CN='+user+'"'
             print (command)
             p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
             (output, err) = p.communicate()
