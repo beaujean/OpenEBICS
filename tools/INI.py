@@ -73,6 +73,6 @@ for user in cfg['Users']:
             ReportText = mutable.find('ebics:ReportText', ns)
             print ('\tReportText:',ReportText.text)
     for body in ebixml.findall('ebics:body', ns):
-        ReturnCode = mutable.find('ebics:ReturnCode', ns)
+        ReturnCode = body.find('ebics:ReturnCode', ns)
         print ('\tReturnCode:',ReturnCode.text)
 
