@@ -25,13 +25,13 @@ key=c.load_privatekey(c.FILETYPE_PEM, st_key)
 
 iss = cert.get_issuer()
 
-print (iss.CN)
-print (iss.O)
+print ('CN:',iss.CN)
+print ('0:',iss.O)
 
 #print (key.type())
-print (key.bits())
+print ('bits:',key.bits())
 
-print (cert.get_serial_number())
+print ('SN:',cert.get_serial_number())
 
 pub = cert.get_pubkey()
 
@@ -47,11 +47,10 @@ pub_der.decode(pub_asn1)
 # Get the modulus
 pub_modulus=pub_der[1]
 pub_exponent=pub_der[2]
-print (pub_modulus)
-print (pub_exponent)
+print ('mod:',pub_modulus)
+print ('exp:',pub_exponent)
 
 digest = cert.digest('SHA256').decode()
-#print (digest)
-print (digest[:47].replace(':', ' '))
-print (digest[48:].replace(':', ' '))
+print ('dig1:',digest[:47].replace(':', ' '))
+print ('dig2:',digest[48:].replace(':', ' '))
 
