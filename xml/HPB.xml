@@ -1,30 +1,19 @@
 <?xml version="1.0"?>
-<ebicsUnsecuredRequest xmlns="http://www.ebics.org/H003" Revision="1" Version="H003">
-  <header authenticate="true">
-    <static>
-      <HostID>{{ HostID }}</HostID>
-	  <Nonce>{{ Nonce }}</Nonce>
-      <Timestamp>{{ TimeStamp }}</Timestamp>
-      <PartnerID>{{ PartnerID }}</PartnerID>
-      <UserID>{{ UserID }}</UserID>
-      <OrderDetails>
-        <OrderType>HPB</OrderType>
-        <OrderID>{{ OrderID }}</OrderID>
-        <OrderAttribute>DZNNN</OrderAttribute>
-      </OrderDetails>
-      <SecurityMedium>0000</SecurityMedium>
-    </static>
-    <mutable></mutable>
-  </header>
-  <AuthSignature><ds:SignedInfo>
-    <ds:CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></ds:CanonicalizationMethod>
-    <ds:SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"></ds:SignatureMethod>
-    <ds:Reference URI="#xpointer(//*[@authenticate='true'])">
-      <ds:Transforms>
-        <ds:Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"></ds:Transform>
-      </ds:Transforms>
-      <ds:DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></ds:DigestMethod>
-      <ds:DigestValue>{{ Digest }}</ds:DigestValue>
-    </ds:Reference>
-  </ds:SignedInfo><ds:SignatureValue>{{ Signature }}</ds:SignatureValue></AuthSignature><body></body>
-</ebicsUnsecuredRequest>
+<ebicsNoPubKeyDigestsRequest xmlns="http://www.ebics.org/H003" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ebics.org/H003 http://www.ebics.org/H003/ebics_keymgmt_response.xsd" Version="H003" Revision="1">
+<header authenticate="true">
+  <static>
+    <HostID>{{ HostID }}</HostID>
+    <Nonce>{{ Nonce }}</Nonce>
+    <Timestamp>{{ TimeStamp }}</Timestamp>
+    <PartnerID>{{ PartnerID }}</PartnerID>
+    <UserID>{{ UserID }}</UserID>
+    <OrderDetails>
+      <OrderType>HPB</OrderType>
+      <OrderAttribute>DZHNN</OrderAttribute>
+    </OrderDetails>
+    <SecurityMedium>0000</SecurityMedium>
+  </static>
+  <mutable></mutable>
+</header>
+<body></body>
+</ebicsNoPubKeyDigestsRequest>
