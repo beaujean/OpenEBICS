@@ -34,6 +34,7 @@ for user in cfg['Users']:
 
     # 2016-07-07T13:26:01.592+01:00
     TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
+    # XXX Generate a unique Nonce on each request XXX
     Nonce = 'D4EFFCDC8394C43A157173E5412222FF'
 
     # Parsing HPB header template
