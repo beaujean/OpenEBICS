@@ -49,3 +49,11 @@ def get_cert_info(cert_file):
 def get_names(type):
     return {'version': key_versions[type], 'name': key_names[type]}
 
+def sign(key_file, string):
+    # Open cert file
+    st_key = open(key_file, 'rt').read()
+    key = OpenSSL.crypto.load_privatekey(OpenSSL.crypto.FILETYPE_PEM, st_key)
+    # Sign string
+    signed = OpenSSL.crypto.sign(key, string, "SHA256")
+    return signed
+

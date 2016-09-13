@@ -1,19 +1,8 @@
-<?xml version="1.0"?>
-<ebicsNoPubKeyDigestsRequest xmlns="http://www.ebics.org/H003" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ebics.org/H003 http://www.ebics.org/H003/ebics_keymgmt_response.xsd" Version="H003" Revision="1">
-<header authenticate="true">
-  <static>
-    <HostID>{{ HostID }}</HostID>
-    <Nonce>{{ Nonce }}</Nonce>
-    <Timestamp>{{ TimeStamp }}</Timestamp>
-    <PartnerID>{{ PartnerID }}</PartnerID>
-    <UserID>{{ UserID }}</UserID>
-    <OrderDetails>
-      <OrderType>HPB</OrderType>
-      <OrderAttribute>DZHNN</OrderAttribute>
-    </OrderDetails>
-    <SecurityMedium>0000</SecurityMedium>
-  </static>
-  <mutable></mutable>
-</header>
-<body></body>
+<ebicsNoPubKeyDigestsRequest xmlns="http://www.ebics.org/H003" Revision="1" Version="H003">
+{{ xml_HPB_header }}
+<AuthSignature xmlns="http://www.w3.org/2000/09/xmldsig#">
+{{ xml_HPB_sinfo }}
+<SignatureValue>{{ crypt_b64 }}</SignatureValue>
+</AuthSignature>
+<body/>
 </ebicsNoPubKeyDigestsRequest>

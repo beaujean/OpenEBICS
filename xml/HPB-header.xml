@@ -1,0 +1,15 @@
+<header xmlns="http://www.ebics.org/H003" authenticate="true">
+<static>
+<HostID>{{ HostID }}</HostID>
+<Nonce>{{ Nonce }}</Nonce>
+<Timestamp>{{ TimeStamp }}</Timestamp>
+<PartnerID>{{ PartnerID }}</PartnerID>
+<UserID>{{ UserID }}</UserID>
+<OrderDetails>
+<OrderType>HPB</OrderType>
+<OrderAttribute>DZHNN</OrderAttribute>
+</OrderDetails>
+<SecurityMedium>0000</SecurityMedium>
+</static>
+<mutable></mutable>
+</header>
