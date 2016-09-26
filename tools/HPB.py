@@ -1,4 +1,4 @@
-#import io
+import os
 import re
 import sys
 import zlib
@@ -38,7 +38,7 @@ for user in cfg['Users']:
     # 2016-07-07T13:26:01.592+01:00
     TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
     # D4EFFCDC8394C43A157173E5412222FF
-    Nonce = binascii.hexlify(os.urandom(16)).upper()
+    Nonce = binascii.hexlify(os.urandom(16)).upper().decode()
 
     # Parsing HPB header template
     xml_HPB_header = Tpl_HPB_header.render(HostID = cfg['Server']['HostID'],
