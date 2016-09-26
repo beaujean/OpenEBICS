@@ -1,14 +1,17 @@
-import io
+#import io
+import re
 import sys
 import zlib
 import pytz
+import array
 import base64
-import codecs
 import hashlib
 import datetime
-from datetime import time, tzinfo
 import requests
-import xml.etree.ElementTree as ET
+import binascii
+from lxml import etree
+from Crypto.Cipher import AES
+from Crypto.PublicKey import RSA
 from jinja2 import Environment, FileSystemLoader
 sys.path.append('./libs/')
 import OpenEBICS
@@ -55,7 +58,7 @@ for user in cfg['Users']:
     #print (xml_HPB_sinfo)
 
     crypt = OEcert.sign('certs/'+user+'/auth.key', xml_HPB_sinfo)
-    crypt_hex = codecs.encode(crypt, 'hex').decode().upper()
+    #crypt_hex = codecs.encode(crypt, 'hex').decode().upper()
     crypt_b64 = base64.b64encode(crypt).decode()
 
     # Parsing HPB final template
@@ -69,13 +72,28 @@ for user in cfg['Users']:
     else:
         response = requests.post(cfg['Server']['URL'], xml_HPB.encode())
 
-    print (response.text)
+    xml_text = re.sub('xmlns="[^"]+"', '', response.text)
 
-    #ebixml = ET.fromstring(response.text)
-    #
-    ##for child in ebixml:
-    ##    print (child.tag,' -> ',child.attrib, ' txt: ', child.text)
-    #
-    #for version in ebixml.findall('{http://www.ebics.org/H000}VersionNumber'):
-    #    print ('Protocol:',version.get('ProtocolVersion'),'Version:',version.text)
+    #ns = {'ebics': 'http://www.ebics.org/H003'}
+    ebixml = etree.fromstring(xml_text.encode())
+    TransactionKey = ebixml.xpath("//body/DataTransfer/DataEncryptionInfo/TransactionKey/text()")[0]
+    OrderData = ebixml.xpath("//body/DataTransfer/OrderData/text()")[0]
+    
+    # Open private key file
+    st_priv_key = open('certs/'+user+'/crypt.key', 'rt').read()
+    priv_key = RSA.importKey(st_priv_key)
+    # Decrypt transaction key
+    trans_key = priv_key.decrypt(base64.b64decode(TransactionKey))
+    trans_key_hex = binascii.hexlify(trans_key)
+    aes_key = trans_key_hex[len(trans_key_hex)-32:]
+    aes_key = binascii.unhexlify(aes_key)
+
+    # the iv paramater on AES cipher intialization is put to \0: Crypto lib doc says it's nt secure (even if IV should not be secret)
+    iv = "\0" * AES.block_size
+    # Decrypt OrderData
+    zipdata = AES.new(aes_key, AES.MODE_CBC, iv).decrypt(base64.b64decode(OrderData))
+    zipdata_hexa = array.array('B', zipdata)
+    bank_datas = zlib.decompress(zipdata_hexa)
+
+    print (bank_datas.decode())
 

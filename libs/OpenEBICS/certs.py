@@ -1,6 +1,9 @@
 import base64
 import OpenSSL.crypto
 from Crypto.Util import asn1
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto.Signature import PKCS1_v1_5
 from Crypto.Util.number import long_to_bytes
 
 key_versions = {'auth'  : 'X002',
@@ -52,8 +55,8 @@ def get_names(type):
 def sign(key_file, string):
     # Open cert file
     st_key = open(key_file, 'rt').read()
-    key = OpenSSL.crypto.load_privatekey(OpenSSL.crypto.FILETYPE_PEM, st_key)
-    # Sign string
-    signed = OpenSSL.crypto.sign(key, string, "SHA256")
+    rsakey = RSA.importKey(st_key)
+    signer = PKCS1_v1_5.new(rsakey)
+    signed = signer.sign(SHA256.new(string.encode()))
     return signed
 
