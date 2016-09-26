@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ebicsRequest xmlns="http://www.ebics.org/H003" Revision="1" Version="H003">
+    <header xmlns="http://www.ebics.org/H003" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" authenticate="true">
+        <static>
+            <HostID></HostID>
+            <TransactionID></TransactionID>
+        </static>
+        <mutable>
+            <TransactionPhase>Transfer</TransactionPhase>
+            <SegmentNumber></SegmentNumber>
+        </mutable>
+    </header>
+    <AuthSignature/>
+    <body>
+        <DataTransfer>
+            <OrderData></OrderData>
+        </DataTransfer>
+    </body>
+</ebicsRequest>
