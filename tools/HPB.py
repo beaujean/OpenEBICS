@@ -37,8 +37,8 @@ for user in cfg['Users']:
 
     # 2016-07-07T13:26:01.592+01:00
     TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
-    # XXX Generate a unique Nonce on each request XXX
-    Nonce = 'D4EFFCDC8394C43A157173E5412222FF'
+    # D4EFFCDC8394C43A157173E5412222FF
+    Nonce = binascii.hexlify(os.urandom(16)).upper()
 
     # Parsing HPB header template
     xml_HPB_header = Tpl_HPB_header.render(HostID = cfg['Server']['HostID'],
