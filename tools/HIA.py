@@ -3,7 +3,6 @@ import zlib
 import pytz
 import base64
 import datetime
-from datetime import time, tzinfo
 import requests
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, FileSystemLoader

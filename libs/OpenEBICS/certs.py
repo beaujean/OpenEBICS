@@ -57,6 +57,7 @@ def sign(key_file, string):
     st_key = open(key_file, 'rt').read()
     rsakey = RSA.importKey(st_key)
     signer = PKCS1_v1_5.new(rsakey)
+    # Sign the SHA256 digested string
     signed = signer.sign(SHA256.new(string.encode()))
     return signed
 
