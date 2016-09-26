@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ebicsRequest xmlns="http://www.ebics.org/H003" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Revision="1" Version="H003">
+	<header authenticate="true">
+	   <static>
+		 <HostID></HostID>
+		 <Nonce></Nonce>
+		 <Timestamp></Timestamp>
+		 <PartnerID></PartnerID>
+		 <UserID></UserID>
+		 <Product Language="fr"></Product>
+		 <OrderDetails>
+		   <OrderType>FUL</OrderType>
+		   <OrderID></OrderID>
+		   <OrderAttribute>DZHNN</OrderAttribute>
+		   <FULOrderParams xsi:type="h003:FULOrderParamsType" xmlns:h003="http://www.ebics.org/H003" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+			 <Parameter>
+			   <Name>TEST</Name>
+			   <Value Type="string">true</Value>
+			 </Parameter>
+			 <FileFormat CountryCode="FR"></FileFormat>
+		   </FULOrderParams>
+		 </OrderDetails>
+		 <BankPubKeyDigests>
+		   <Authentication Version="X002" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></Authentication>
+		   <Encryption Version="E002" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></Encryption>
+		 </BankPubKeyDigests>
+		 <SecurityMedium>0000</SecurityMedium>
+		 <NumSegments></NumSegments>
+	   </static>
+	   <mutable>
+		 <TransactionPhase>Initialisation</TransactionPhase>
+	   </mutable>
+	</header>
+    <AuthSignature/>
+	<body>
+		<DataTransfer>
+			<DataEncryptionInfo authenticate="true">
+			<EncryptionPubKeyDigest Version="E002" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256"></EncryptionPubKeyDigest>
+			<TransactionKey></TransactionKey>
+		</DataEncryptionInfo>
+			<SignatureData authenticate="true"></SignatureData>
+		</DataTransfer>
+	</body>
+</ebicsRequest>
