@@ -18,5 +18,9 @@ def config():
         print ('Error: the config file',cfgfile,'doesn''t exists')
         sys.exit(1)
 
+    # Upload file ?
+    if sys.argv and sys.argv[2:]:
+        cfg['upload'] = sys.argv[2]
+
     return cfg
 
