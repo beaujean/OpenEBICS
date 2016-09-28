@@ -31,7 +31,7 @@ for user in sorted(cfg['Users']):
             next
         else:
             # Getting useful certificate informations
-            cert = OEcert.get_cert_info(crtfile)
+            cert = OEcert.get_cert_info_file(crtfile)
             Date = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).strftime("%d/%m/%Y %H:%M")
             # Parsing letter templates
             txt_letter = Tpl_letter.render(HostID = cfg['Server']['HostID'],

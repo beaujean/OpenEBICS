@@ -27,7 +27,7 @@ for user in cfg['Users']:
     UserID = cfg['Users'][user]['UserID']
 
     # Getting useful certificate informations
-    auth_cert = OEcert.get_cert_info('certs/'+user+'/sign.crt')
+    auth_cert = OEcert.get_cert_info_file('certs/'+user+'/sign.crt')
 
     # 2016-07-07T13:26:01.592+01:00
     TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
