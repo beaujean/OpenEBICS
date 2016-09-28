@@ -24,7 +24,7 @@
         <Encryption Version="E002" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256">{{ BankEncrKey }}</Encryption>
       </BankPubKeyDigests>
       <SecurityMedium>0000</SecurityMedium>
-  	<NumSegments>{{ Segments }}</NumSegments>
+      <NumSegments>{{ Segments }}</NumSegments>
     </static>
     <mutable>
       <TransactionPhase>Initialisation</TransactionPhase>
