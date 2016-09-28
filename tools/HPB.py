@@ -130,7 +130,7 @@ for user in cfg['Users']:
     userdir = 'certs/'+cfg['Server']['HostID']
     if not os.path.exists(userdir):
         os.makedirs(userdir)
-    certfile = userdir+'/encr.crt'
+    certfile = userdir+'/crypt.crt'
     if os.path.exists(certfile):
         print ('Bank encrypt cert file',certfile,'already exists')
     else:
