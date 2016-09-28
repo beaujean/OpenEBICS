@@ -26,14 +26,16 @@ def appendBitPadding(datas, blocksize=AES_blocksize):
     padding = chr(0x80)+'\0'*pad_len
     return datas + padding.encode('latin_1')
 
-# Fetch useful informations from certs files
-def get_cert_info(cert_file):
-    cert = {}
+def get_cert_info_file(cert_file):
     # Open cert file
-    c = OpenSSL.crypto
     cert_string = open(cert_file, 'rt').read()
-    cert_data = c.load_certificate(c.FILETYPE_PEM, cert_string)
+    return get_cert_info(cert_string)
 
+# Fetch useful informations from certs files
+def get_cert_info(cert_string):
+    cert = {}
+    c = OpenSSL.crypto
+    cert_data = c.load_certificate(c.FILETYPE_PEM, cert_string)
     # Format cert string as EBICS needs it
     cert['Letter'] = cert_string
     cert_string = cert_string.replace('-----BEGIN CERTIFICATE-----', '')
