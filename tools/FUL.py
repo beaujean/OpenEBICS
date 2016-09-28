@@ -51,6 +51,10 @@ for user in cfg['Users']:
     sdd_segs = [ sdd_b64[a:a+256*1024] for a in range(0,len(sdd_b64), 256*1024) ] # Cut file into segments 256*1024 for testing
     sdd_num_segs = len(sdd_segs)
 
+    # Load bank certs
+    bank_auth_cert = OEcert.get_cert_info_file('certs/'+cfg['Server']['HostID']+'/auth.crt')
+    bank_encr_cert = OEcert.get_cert_info_file('certs/'+cfg['Server']['HostID']+'/crypt.crt')
+
     # 2016-07-07T13:26:01.592+01:00
     TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
     # D4EFFCDC8394C43A157173E5412222FF
@@ -63,7 +67,9 @@ for user in cfg['Users']:
                                 PartnerID = cfg['Server']['PartnerID'],
                                 UserID = UserID,
                                 OrderID = 'A001',
-                                Segments = sdd_num_segs)
+                                Segments = sdd_num_segs,
+                                BankAuthKey = bank_auth_cert['HashKey'],
+                                BankEncrKey = bank_encr_cert['HashKey'])
     print (xml_FUL)
 
 #    # SHA256 Hash

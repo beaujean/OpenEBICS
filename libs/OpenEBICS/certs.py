@@ -1,4 +1,5 @@
 import base64
+import hashlib
 import OpenSSL.crypto
 from Crypto.Util import asn1
 from Crypto.Hash import SHA256
@@ -61,7 +62,14 @@ def get_cert_info(cert_string):
     # Finally modulus / Exponent !
     cert['Modulus'] = base64.b64encode(long_to_bytes(pub_der[1])).decode()
     cert['Exponent'] = base64.b64encode(long_to_bytes(pub_der[2])).decode()
- 
+
+    exp_hex = str(hex(pub_der[2]))[2:]
+    mod_hex = str(hex(pub_der[1]))[2:]
+    hash_key = exp_hex+' '+mod_hex
+    if hash_key[0] == '0':
+        hash_key = hash_key[1:]
+    cert['HashKey'] = base64.b64encode(hashlib.sha256(hash_key.encode()).digest()).decode()
+
     return cert
 
 def get_names(type):
