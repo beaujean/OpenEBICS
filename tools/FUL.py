@@ -9,7 +9,6 @@ import hashlib
 import datetime
 import requests
 import binascii
-from Padding import *
 from lxml import etree
 from Crypto.Cipher import AES
 from Crypto.PublicKey import RSA
@@ -39,17 +38,18 @@ for user in cfg['Users']:
         continue
     UserID = cfg['Users'][user]['UserID']
 
+    # Read and zip file
     sdd_content = open(cfg['upload'], 'rb').read()
     sdd_zip = zlib.compress(sdd_content, 9)
-    #sdd_zip = appendBitPadding(sdd_zip)
+    sdd_zip = OEcert.appendBitPadding(sdd_zip)
     iv = "\0" * AES.block_size
-    # Open private key file
-    st_priv_key = open('certs/'+user+'/crypt.key', 'rt').read()
-    priv_key = RSA.importKey(st_priv_key)
+    aes_key = binascii.hexlify(os.urandom(16)).upper()
     # Encrypt file
-    sdd_encrypt = AES.new(priv_key, AES.MODE_CBC, iv).encrypt(sdd_zip)
+    sdd_encrypt = AES.new(aes_key, AES.MODE_CBC, iv).encrypt(sdd_zip)
     sdd_b64 = base64.b64encode(sdd_encrypt)
-    sdd_segs = [ sdd_b64[a:a+chunksize] for a in range(0,len(sdd_b64), 1024*1024) ] # Cut file into segments
+    #sdd_segs = [ sdd_b64[a:a+1024*1024] for a in range(0,len(sdd_b64), 1024*1024) ] # Cut file into segments 1024*1024
+    sdd_segs = [ sdd_b64[a:a+256*1024] for a in range(0,len(sdd_b64), 256*1024) ] # Cut file into segments 256*1024 for testing
+    sdd_num_segs = len(sdd_segs)
 
     # 2016-07-07T13:26:01.592+01:00
     TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
@@ -62,7 +62,8 @@ for user in cfg['Users']:
                                 TimeStamp = TimeStamp,
                                 PartnerID = cfg['Server']['PartnerID'],
                                 UserID = UserID,
-                                OrderID = 'A001')
+                                OrderID = 'A001',
+                                Segments = sdd_num_segs)
     print (xml_FUL)
 
 #    # SHA256 Hash

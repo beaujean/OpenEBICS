@@ -13,6 +13,19 @@ key_names = {'auth'  : 'Authentification',
              'crypt' : 'Chiffrement',
              'sign'  : 'Signature'}
 
+AES_blocksize = 16
+# Functions from Padding package not working with Python3...
+def paddingLength(str_len, blocksize=AES_blocksize):
+    assert 0 < blocksize < 255, 'blocksize must be between 0 and 255'
+    assert str_len > 0 , 'string length should be non-negative'
+    pad_len = blocksize - (str_len % blocksize)
+    return pad_len
+
+def appendBitPadding(datas, blocksize=AES_blocksize):
+    pad_len = paddingLength(len(datas), blocksize) - 1
+    padding = chr(0x80)+'\0'*pad_len
+    return datas + padding.encode('latin_1')
+
 # Fetch useful informations from certs files
 def get_cert_info(cert_file):
     cert = {}
