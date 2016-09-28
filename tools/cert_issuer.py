@@ -2,26 +2,30 @@ import sys
 import OpenSSL.crypto
 from Crypto.Util import asn1
 import dumper
+import base64
 import pprint
+import hashlib
 sys.path.append('./libs/')
 import OpenEBICS
 
 cfg = OpenEBICS.config()
 
 # Parsing users args
-for user in cfg['Users']:
-    if 'transport' in cfg['Users'][user]:
-        print ('Transporter:',user,'->',cfg['Users'][user]['UserID'])
-        User = user
-        UserID = cfg['Users'][user]['UserID']
+#for user in cfg['Users']:
+#    if 'transport' in cfg['Users'][user]:
+#        print ('Transporter:',user,'->',cfg['Users'][user]['UserID'])
+#        User = user
+#        UserID = cfg['Users'][user]['UserID']
+
+User = cfg['Server']['HostID']
 
 c=OpenSSL.crypto
 
 st_cert=open('certs/'+User+'/auth.crt', 'rt').read()
 cert=c.load_certificate(c.FILETYPE_PEM, st_cert)
 
-st_key=open('certs/'+User+'/auth.key', 'rt').read()
-key=c.load_privatekey(c.FILETYPE_PEM, st_key)
+#st_key=open('certs/'+User+'/auth.key', 'rt').read()
+#key=c.load_privatekey(c.FILETYPE_PEM, st_key)
 
 iss = cert.get_issuer()
 
@@ -29,7 +33,7 @@ print ('CN:',iss.CN)
 print ('0:',iss.O)
 
 #print (key.type())
-print ('bits:',key.bits())
+#print ('bits:',key.bits())
 
 print ('SN:',cert.get_serial_number())
 
@@ -53,4 +57,13 @@ print ('exp:',pub_exponent)
 digest = cert.digest('SHA256').decode()
 print ('dig1:',digest[:47].replace(':', ' '))
 print ('dig2:',digest[48:].replace(':', ' '))
+
+e_hex_str = str(hex(pub_exponent))[2:]
+n_hex_str = str(hex(pub_modulus))[2:]
+
+s = e_hex_str+' '+n_hex_str
+if s[0] == '0':
+    s = s[1:]
+res = base64.b64encode(hashlib.sha256(s.encode()).digest())
+print (s, res)
 
