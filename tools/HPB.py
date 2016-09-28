@@ -19,6 +19,9 @@ import OpenEBICS.certs as OEcert
 
 cfg = OpenEBICS.config()
 
+def chunkstring(string, length):
+    return (string[0+i:length+i] for i in range(0, len(string), length))
+
 # Opening templates
 TplEnv = Environment(loader=FileSystemLoader('xml/'))
 Tpl_HPB = TplEnv.get_template('HPB.xml')
@@ -95,5 +98,43 @@ for user in cfg['Users']:
     zipdata_hexa = array.array('B', zipdata)
     bank_datas = zlib.decompress(zipdata_hexa)
 
-    print (bank_datas.decode())
+    bank_datas_decode = re.sub('xmlns="[^"]+"', '', bank_datas.decode())
+    bank_datas_decode = re.sub('ds:', '', bank_datas_decode)
+    bank_datas_decode = re.sub('xmlns="http://www.ebics.org/H003"', '', bank_datas_decode)
+    #print (bank_datas_decode)
+    bankxml = etree.fromstring(bank_datas_decode.encode())
+
+    auth_certificate = bankxml.xpath("//AuthenticationPubKeyInfo/X509Data/X509Certificate/text()")[0]
+    auth_cert = "\n".join(chunkstring(auth_certificate, 64))
+    auth_cert = "-----BEGIN CERTIFICATE-----\n" + auth_cert + "\n-----END CERTIFICATE-----\n"
+    #print ('Bank auth cert:\n'+auth_cert)
+
+    # Storing bank cert file
+    userdir = 'certs/'+cfg['Server']['HostID']
+    if not os.path.exists(userdir):
+        os.makedirs(userdir)
+    certfile = userdir+'/auth.crt'
+    if os.path.exists(certfile):
+        print ('Bank auth cert file',certfile,'already exists')
+    else:
+        with open(certfile, 'w') as fh:
+            fh.write(auth_cert)
+        print ('Bank auth cert saved in', certfile)
+
+    encrypt_certificate = bankxml.xpath("//EncryptionPubKeyInfo/X509Data/X509Certificate/text()")[0]
+    encr_cert = "\n".join(chunkstring(encrypt_certificate, 64))
+    encr_cert = "-----BEGIN CERTIFICATE-----\n" + encr_cert + "\n-----END CERTIFICATE-----\n"
+    #print ('Bank encrypt cert:\n'+encr_cert)
+
+    # Storing bank encrypt file
+    userdir = 'certs/'+cfg['Server']['HostID']
+    if not os.path.exists(userdir):
+        os.makedirs(userdir)
+    certfile = userdir+'/encr.crt'
+    if os.path.exists(certfile):
+        print ('Bank encrypt cert file',certfile,'already exists')
+    else:
+        with open(certfile, 'w') as fh:
+            fh.write(encr_cert)
+        print ('Bank encrypt cert saved in', certfile)
 
