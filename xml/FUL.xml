@@ -16,7 +16,7 @@
             <Name>TEST</Name>
             <Value Type="string">TRUE</Value>
           </Parameter>
-  	    <FileFormat CountryCode="FR">{{ FileFormat }}</FileFormat>
+          <FileFormat CountryCode="FR">{{ FileFormat }}</FileFormat>
         </FULOrderParams>
       </OrderDetails>
       <BankPubKeyDigests>
@@ -36,7 +36,7 @@
       <DataEncryptionInfo authenticate="true">
         <EncryptionPubKeyDigest Version="E002" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256">{{ BankEncrKey }}</EncryptionPubKeyDigest>
         <TransactionKey>{{ TransactionKey }}</TransactionKey>
-        </DataEncryptionInfo>
+      </DataEncryptionInfo>
       <SignatureData authenticate="true">{{ SignatureData }}</SignatureData>
     </DataTransfer>
   </body>
