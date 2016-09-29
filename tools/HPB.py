@@ -26,7 +26,7 @@ def chunkstring(string, length):
 TplEnv = Environment(loader=FileSystemLoader('xml/'))
 Tpl_HPB = TplEnv.get_template('HPB.xml')
 Tpl_HPB_header = TplEnv.get_template('HPB-header.xml')
-Tpl_HPB_sinfo = TplEnv.get_template('HPB-sinfo.xml')
+Tpl_sinfo = TplEnv.get_template('sinfo.xml')
 
 # Send an HBP request for each user
 for user in cfg['Users']:
@@ -57,18 +57,18 @@ for user in cfg['Users']:
     xml_b64 = b64encode(xml_hash).decode()
 
     # Parsing HPB sign info template
-    xml_HPB_sinfo = Tpl_HPB_sinfo.render(xml_b64 = xml_b64)
-    #print (xml_HPB_sinfo)
+    xml_sinfo = Tpl_sinfo.render(xml_b64 = xml_b64)
+    #print (xml_sinfo)
 
-    crypt = OEcert.sign('certs/'+user+'/auth.key', xml_HPB_sinfo)
+    crypt = OEcert.sign('certs/'+user+'/auth.key', xml_sinfo)
     #crypt_hex = codecs.encode(crypt, 'hex').decode().upper()
     crypt_b64 = b64encode(crypt).decode()
 
     # Parsing HPB final template
     xml_HPB = Tpl_HPB.render(xml_HPB_header = xml_HPB_header,
-            xml_HPB_sinfo = xml_HPB_sinfo,
+            xml_sinfo = xml_sinfo,
             crypt_b64 = crypt_b64)
-    #print (xml_HPB)
+    print (xml_HPB)
 
     if 'Cert' in cfg['Server']:
         response = requests.post(cfg['Server']['URL'], cert=cfg['Server']['Cert'], data=xml_HPB.encode())
@@ -76,7 +76,7 @@ for user in cfg['Users']:
         response = requests.post(cfg['Server']['URL'], xml_HPB.encode())
 
     xml_text = re.sub('xmlns="[^"]+"', '', response.text)
-    #print (xml_text)
+    print (xml_text)
 
     #ns = {'ebics': 'http://www.ebics.org/H003'}
     ebixml = etree.fromstring(xml_text.encode())
