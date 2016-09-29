@@ -1,7 +1,7 @@
 import sys
 import zlib
 import pytz
-import base64
+from base64 import b64encode
 import datetime
 import requests
 import xml.etree.ElementTree as ET
@@ -40,13 +40,13 @@ for user in cfg['Users']:
                             IssuerName = auth_cert['Issuer'],
                             SerialNumber = auth_cert['SerialNumber'],
                             Certificate = auth_cert['Cert'],
-                            Modulus = auth_cert['Modulus'],
-                            Exponent = auth_cert['Exponent'])
+                            Modulus = auth_cert['Mod_b64'],
+                            Exponent = auth_cert['Exp_b64'])
     #print (xml_A005)
 
     # Gzip and base64 A005 auth cert
     zip_A005 = zlib.compress(xml_A005.encode())
-    b64_A005 = base64.b64encode(zip_A005)
+    b64_A005 = b64encode(zip_A005)
 
     # Parsing INI templates
     xml_INI = Tpl_INI.render(HostID = cfg['Server']['HostID'],

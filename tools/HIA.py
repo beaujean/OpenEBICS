@@ -1,9 +1,9 @@
 import sys
 import zlib
 import pytz
-import base64
 import datetime
 import requests
+from base64 import b64encode
 import xml.etree.ElementTree as ET
 from jinja2 import Environment, FileSystemLoader
 sys.path.append('./libs/')
@@ -40,19 +40,19 @@ for user in cfg['Users']:
                             AuthIssuerName = auth_cert['Issuer'],
                             AuthSerialNumber = auth_cert['SerialNumber'],
                             AuthCertificate = auth_cert['Cert'],
-                            AuthModulus = auth_cert['Modulus'],
-                            AuthExponent = auth_cert['Exponent'],
+                            AuthModulus = auth_cert['Mod_b64'],
+                            AuthExponent = auth_cert['Exp_b64'],
                             EncrIssuerName = encr_cert['Issuer'],
                             EncrSerialNumber = encr_cert['SerialNumber'],
                             EncrCertificate = encr_cert['Cert'],
-                            EncrModulus = encr_cert['Modulus'],
-                            EncrExponent = encr_cert['Exponent'],
+                            EncrModulus = encr_cert['Mod_b64'],
+                            EncrExponent = encr_cert['Exp_b64'],
                             TimeStamp = TimeStamp)
     #print (xml_HIA_data)
 
     # Gzip and base64 HIA data auth cert
     zip_HIA_data = zlib.compress(xml_HIA_data.encode())
-    b64_HIA_data = base64.b64encode(zip_HIA_data)
+    b64_HIA_data = b64encode(zip_HIA_data)
 
     # Parsing HIA templates
     xml_HIA = Tpl_HIA.render(HostID = cfg['Server']['HostID'],

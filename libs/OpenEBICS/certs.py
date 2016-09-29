@@ -1,10 +1,10 @@
-import base64
 import hashlib
 import OpenSSL.crypto
+from base64 import b64encode
 from Crypto.Util import asn1
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
-from Crypto.Signature import PKCS1_v1_5
+from Crypto.Signature import PKCS1_v1_5 as PKCSign
 from Crypto.Util.number import long_to_bytes
 
 key_versions = {'auth'  : 'X002',
@@ -60,15 +60,17 @@ def get_cert_info(cert_string):
     pub_der = asn1.DerSequence()
     pub_der.decode(pub_asn1)
     # Finally modulus / Exponent !
-    cert['Modulus'] = base64.b64encode(long_to_bytes(pub_der[1])).decode()
-    cert['Exponent'] = base64.b64encode(long_to_bytes(pub_der[2])).decode()
+    cert['Modulus'] = long_to_bytes(pub_der[1])
+    cert['Exponent'] = long_to_bytes(pub_der[2])
+    cert['Mod_b64'] = b64encode(long_to_bytes(pub_der[1])).decode()
+    cert['Exp_b64'] = b64encode(long_to_bytes(pub_der[2])).decode()
 
     exp_hex = str(hex(pub_der[2]))[2:]
     mod_hex = str(hex(pub_der[1]))[2:]
     hash_key = exp_hex+' '+mod_hex
     if hash_key[0] == '0':
         hash_key = hash_key[1:]
-    cert['HashKey'] = base64.b64encode(hashlib.sha256(hash_key.encode()).digest()).decode()
+    cert['HashKey'] = b64encode(hashlib.sha256(hash_key.encode()).digest()).decode()
 
     return cert
 
@@ -79,7 +81,7 @@ def sign(key_file, string):
     # Open cert file
     st_key = open(key_file, 'rt').read()
     rsakey = RSA.importKey(st_key)
-    signer = PKCS1_v1_5.new(rsakey)
+    signer = PKCSign.new(rsakey)
     # Sign the SHA256 digested string
     signed = signer.sign(SHA256.new(string.encode()))
     return signed
