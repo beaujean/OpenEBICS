@@ -1,7 +1,7 @@
 <ebicsNoPubKeyDigestsRequest xmlns="http://www.ebics.org/H003" Revision="1" Version="H003">
 {{ xml_HPB_header }}
 <AuthSignature xmlns="http://www.w3.org/2000/09/xmldsig#">
-{{ xml_HPB_sinfo }}
+{{ xml_sinfo }}
 <SignatureValue>{{ crypt_b64 }}</SignatureValue>
 </AuthSignature>
 <body/>
