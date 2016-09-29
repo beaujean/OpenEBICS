@@ -1,0 +1,30 @@
+<header xmlns="http://www.ebics.org/H003" authenticate="true">
+<static>
+<HostID>{{ HostID }}</HostID>
+<Nonce>{{ Nonce }}</Nonce>
+<Timestamp>{{ TimeStamp }}</Timestamp>
+<PartnerID>{{ PartnerID }}</PartnerID>
+<UserID>{{ UserID }}</UserID>
+<OrderDetails>
+<OrderType>FUL</OrderType>
+<OrderID>{{ OrderID }}</OrderID>
+<OrderAttribute>DZHNN</OrderAttribute>
+<FULOrderParams xsi:type="h003:FULOrderParamsType" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<Parameter>
+<Name>TEST</Name>
+<Value Type="string">TRUE</Value>
+</Parameter>
+<FileFormat CountryCode="FR">{{ FileFormat }}</FileFormat>
+</FULOrderParams>
+</OrderDetails>
+<BankPubKeyDigests>
+<Authentication Version="X002" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256">{{ BankAuthKey }}</Authentication>
+<Encryption Version="E002" Algorithm="http://www.w3.org/2001/04/xmlenc#sha256">{{ BankEncrKey }}</Encryption>
+</BankPubKeyDigests>
+<SecurityMedium>0000</SecurityMedium>
+<NumSegments>{{ Segments }}</NumSegments>
+</static>
+<mutable>
+<TransactionPhase>Initialisation</TransactionPhase>
+</mutable>
+</header>
