@@ -60,8 +60,8 @@ def get_cert_info(cert_string):
     pub_der = asn1.DerSequence()
     pub_der.decode(pub_asn1)
     # Finally modulus / Exponent !
-    cert['Modulus'] = long_to_bytes(pub_der[1])
-    cert['Exponent'] = long_to_bytes(pub_der[2])
+    cert['Modulus'] = pub_der[1]
+    cert['Exponent'] = pub_der[2]
     cert['Mod_b64'] = b64encode(long_to_bytes(pub_der[1])).decode()
     cert['Exp_b64'] = b64encode(long_to_bytes(pub_der[2])).decode()
 
