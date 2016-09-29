@@ -30,7 +30,8 @@ else:
 TplEnv = Environment(loader=FileSystemLoader('xml/'))
 Tpl_FUL = TplEnv.get_template('FUL.xml')
 Tpl_FUL_us = TplEnv.get_template('FUL-usersign.xml')
-Tpl_HPB_sinfo = TplEnv.get_template('HPB-sinfo.xml')
+Tpl_FUL_header = TplEnv.get_template('FUL-header.xml')
+Tpl_sinfo = TplEnv.get_template('sinfo.xml')
 
 # Send an HBP request for each user
 for user in cfg['Users']:
@@ -41,6 +42,12 @@ for user in cfg['Users']:
         continue
     UserID = cfg['Users'][user]['UserID']
 
+    # 2016-07-07T13:26:01.592+01:00
+    TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
+    # D4EFFCDC8394C43A157173E5412222FF
+    Nonce = binascii.hexlify(os.urandom(16)).upper().decode()
+
+    # Zip, encrypt and cut SDD file
     # Read and zip file
     sdd_content = open(cfg['upload'], 'rb').read()
     sdd_zip = zlib.compress(sdd_content, 9)
@@ -64,7 +71,7 @@ for user in cfg['Users']:
     sdd_segs = [ sdd_b64[a:a+256*1024] for a in range(0,len(sdd_b64), 256*1024) ] # Cut file into segments 256*1024 for testing purposes
     sdd_num_segs = len(sdd_segs)
 
-    # SignatureData
+    # Sign and b64 SDD file
     order_data_string = sdd_content.decode().replace('\n', '').replace('\r', '').replace(chr(26), '')
     signed_info = OEcert.sign('certs/'+user+'/sign.key', order_data_string)
     signed_info_b64 = b64encode(signed_info)
@@ -78,38 +85,37 @@ for user in cfg['Users']:
     signed_info_zip = OEcert.appendBitPadding(signed_info_zip)
     iv = "\0" * AES.block_size
     signed_info_encrypt = AES.new(binascii.unhexlify(aes_key), AES.MODE_CBC, iv).encrypt(signed_info_zip)
-    signed_info_b64 = b64encode(signed_info_encrypt).decode()
+    SignatureData = b64encode(signed_info_encrypt).decode()
 
-    # 2016-07-07T13:26:01.592+01:00
-    TimeStamp = datetime.datetime.now(tz=pytz.timezone('Europe/Paris')).isoformat('T')
-    # D4EFFCDC8394C43A157173E5412222FF
-    Nonce = binascii.hexlify(os.urandom(16)).upper().decode()
-
-    # Parsing HPB header template
-    xml_FUL = Tpl_FUL.render(HostID = cfg['Server']['HostID'],
+    # Parsing FUL header template
+    xml_FUL_header = Tpl_FUL_header.render(HostID = cfg['Server']['HostID'],
                                 Nonce = Nonce,
                                 TimeStamp = TimeStamp,
                                 PartnerID = cfg['Server']['PartnerID'],
                                 UserID = UserID,
                                 OrderID = 'A001',
-                                FileFormat = 'pain.008.001.02.xsd',
-                                Segments = sdd_num_segs,
+                                FileFormat = 'pain.008.001.02.sdd',
                                 BankAuthKey = bank_auth_cert['HashKey'],
                                 BankEncrKey = bank_encr_cert['HashKey'],
-                                TransactionKey = aes_key_b64,
-                                SignatureData = signed_info_b64)
+                                Segments = sdd_num_segs)
 
+    print (xml_FUL_header)
     # SHA256 Hash
-    xml_hash = hashlib.sha256(xml_FUL.encode()).digest()
+    xml_hash = hashlib.sha256(xml_FUL_header.encode()).digest()
     # Base64
     xml_b64 = b64encode(xml_hash).decode()
     # Parsing HPB sign info template
-    xml_HPB_sinfo = Tpl_HPB_sinfo.render(xml_b64 = xml_b64)
-    crypt = OEcert.sign('certs/'+user+'/auth.key', xml_HPB_sinfo)
+    xml_sinfo = Tpl_sinfo.render(xml_b64 = xml_b64)
+    crypt = OEcert.sign('certs/'+user+'/auth.key', xml_sinfo)
     crypt_b64 = b64encode(crypt).decode()
-    auth_signature = '<AuthSignature>\n'+xml_HPB_sinfo+'\n'+'<SignatureValue>'+crypt_b64+'</SignatureValue>\n</AuthSignature>'
-    #print (auth_signature)
-    xml_FUL = xml_FUL.replace('<AuthSignature/>', auth_signature)
+
+    xml_FUL = Tpl_FUL.render(xml_FUL_header = xml_FUL_header,
+                                BankAuthKey = bank_auth_cert['HashKey'],
+                                BankEncrKey = bank_encr_cert['HashKey'],
+                                TransactionKey = aes_key_b64,
+                                SignatureData = SignatureData,
+                                xml_sinfo = xml_sinfo,
+                                crypt_b64 = crypt_b64)
     print (xml_FUL)
 
     if 'Cert' in cfg['Server']:
