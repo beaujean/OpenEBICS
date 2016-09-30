@@ -78,7 +78,7 @@ def get_names(type):
     return {'version': key_versions[type], 'name': key_names[type]}
 
 def sign(key_file, string):
-    # Open cert file
+    # Open key file
     st_key = open(key_file, 'rt').read()
     rsakey = RSA.importKey(st_key)
     signer = PKCSign.new(rsakey)
