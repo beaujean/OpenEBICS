@@ -1,6 +1,7 @@
 import sys
 import OpenSSL.crypto
 from Crypto.Util import asn1
+from Crypto.PublicKey import RSA
 import dumper
 import base64
 import pprint
@@ -17,15 +18,23 @@ cfg = OpenEBICS.config()
 #        User = user
 #        UserID = cfg['Users'][user]['UserID']
 
-User = cfg['Server']['HostID']
+#User = cfg['Server']['HostID']
+User = cfg['Users'][user]
 
 c=OpenSSL.crypto
 
 st_cert=open('certs/'+User+'/auth.crt', 'rt').read()
 cert=c.load_certificate(c.FILETYPE_PEM, st_cert)
 
-#st_key=open('certs/'+User+'/auth.key', 'rt').read()
-#key=c.load_privatekey(c.FILETYPE_PEM, st_key)
+st_key=open('certs/'+User+'/auth.key', 'rt').read()
+private = RSA.importKey(st_key)
+modulus = getattr(private.key, 'n')
+private_exponent = getattr(private.key, 'd')
+public_exponent = getattr(private.key, 'e')
+
+print ('mod:',modulus)
+print ('pub exp:',public_exponent)
+print ('priv exp:',private_exponent)
 
 iss = cert.get_issuer()
 
@@ -38,6 +47,7 @@ print ('0:',iss.O)
 print ('SN:',cert.get_serial_number())
 
 pub = cert.get_pubkey()
+#priv = key.get_privkey()
 
 # Only works for RSA (I think)
 #if pub.type()!=c.TYPE_RSA:
@@ -52,7 +62,7 @@ pub_der.decode(pub_asn1)
 pub_modulus=pub_der[1]
 pub_exponent=pub_der[2]
 print ('mod:',pub_modulus)
-print ('exp:',pub_exponent)
+print ('pub exp:',pub_exponent)
 
 digest = cert.digest('SHA256').decode()
 print ('dig1:',digest[:47].replace(':', ' '))
